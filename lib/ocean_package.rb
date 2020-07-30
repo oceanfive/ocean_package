@@ -6,6 +6,7 @@ require_relative 'ocean_package/config'
 require_relative 'ocean_package/command'
 require_relative 'ocean_package/constants'
 require_relative 'ocean_package/fir'
+require_relative 'ocean_package/oss'
 
 module OceanPackage
   require 'claide'

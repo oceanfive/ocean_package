@@ -29,6 +29,13 @@ module OceanPackage
     # 本次更新内容
     attr_accessor :change_log
 
+    # oss bucket 名称
+    attr_accessor :oss_bucket_name
+    # oss bucket 路径
+    attr_accessor :oss_bucket_path
+    # oss endpoint
+    attr_accessor :oss_endpoint
+
     def initialize(params = [])
       argv = CLAide::ARGV.new(params)
 
@@ -68,6 +75,15 @@ module OceanPackage
 
       @change_log = argv.option("change-log", "")
       puts "change_log: #{@change_log}"
+
+      @oss_bucket_name = argv.option("oss-bucket-name", "")
+      puts "@oss_bucket_name: #{@oss_bucket_name}"
+
+      @oss_bucket_path = argv.option("oss-bucket-path", "")
+      puts "oss_bucket_path: #{@oss_bucket_path}"
+
+      @oss_endpoint = argv.option("oss-endpoint", "")
+      puts "@oss_endpoint: #{@oss_endpoint}"
 
     end
 
@@ -239,8 +255,7 @@ module OceanPackage
 
     def export
       puts "export ====="
-      # run_export_sh
-      
+
       res = system(export_cmd)
       puts "#{res}"
       puts "$? ====="
@@ -250,42 +265,35 @@ module OceanPackage
     end
 
     def upload
+      upload_to_fir
+    end
+
+    def fir_log_path
+      final_archive_path + 'fir.log'
+    end
+
+    def upload_to_fir
+      # path = '/Users/ocean/Documents/myipas/zto2/ztoExpressClient/2020-07-30_13-38-47/fir.log'
+      # fir = OceanPackage::Fir.new(@fir_token, final_change_log, ipa_file_path, path)
+      # fir.whole_download_link
+      # fir.find_qr_code_path
+
       if @fir_token.empty? == false
-        path = final_archive_path + 'fir.log'
+        path = fir_log_path
         fir = OceanPackage::Fir.new(@fir_token, final_change_log, ipa_file_path, path)
         fir.run
 
-        # ipa_file_path = '/Users/ocean/Documents/myipas/zto2/ztoExpressClient/2020-07-26_01-15-23/ztoExpressClient.ipa'
-        # path = '/Users/ocean/Documents/myipas/zto2/ztoExpressClient/2020-07-26_01-15-23/fir.log'
-        # fir = OceanPackage::Fir.new(@fir_token, final_change_log, ipa_file_path, path)
-        # fir.run
+        qr_code_path = fir.find_qr_code_path
+
+        upload_qr_code(qr_code_path, fir.find_release_id)
       end
-
     end
 
-    def find_export_shell_path
-      return '/Users/ocean/Desktop/code/ruby/ocean_package/lib/ocean_package/export.sh'
-      # puts 'find_export_shell_path ===='
-      # path = FileUtils.pwd + '/export.sh'
-      # puts path
-      # return path
-    end
-
-    def run_export_sh
-      path = find_export_shell_path
-      cmd = 'sh ' + path
-      cmd += ' ' + export_cmd_parms
-
-      puts 'run_export_sh ===='
-      puts cmd
-
-      res = system(cmd)
-      puts "#{res}"
-      puts "$? ====="
-      puts $?
-      puts "$0 ====="
-      puts $0
-
+    def upload_qr_code(path, name)
+      oss = OceanPackage::Oss.new(@oss_bucket_name, @oss_bucket_path, @oss_endpoint)
+      url = oss.upload(path, name)
+      puts 'url =='
+      puts url
     end
 
   end
