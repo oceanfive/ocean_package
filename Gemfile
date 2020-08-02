@@ -6,3 +6,6 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 gemspec
 
 gem 'claide', '~> 1.0', '>= 1.0.3'
+gem 'dingbot'
+gem 'CFPropertyList'
+gem 'semantic_logger'

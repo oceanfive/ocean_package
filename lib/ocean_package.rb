@@ -1,4 +1,7 @@
 require 'fileutils'
+require 'dingbot'
+require 'cfpropertylist'
+require 'semantic_logger'
 
 # 注意：这里使用 require_relative 来引用文件
 require_relative 'ocean_package/version'
@@ -7,6 +10,10 @@ require_relative 'ocean_package/command'
 require_relative 'ocean_package/constants'
 require_relative 'ocean_package/fir'
 require_relative 'ocean_package/oss'
+require_relative 'ocean_package/dingtalk'
+require_relative 'ocean_package/ipa'
+require_relative 'ocean_package/logger'
+require_relative 'ocean_package/package'
 
 module OceanPackage
   require 'claide'
