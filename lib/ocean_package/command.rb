@@ -91,6 +91,7 @@ module OceanPackage
       package.run
       upload
       send_ding_talk_msg
+      finished
     end
 
     # 上传 ipa 文件
@@ -155,6 +156,14 @@ module OceanPackage
 
       ding.send_card_message(title, content)
       ding.send_text_message(title, @at_mobiles)
+    end
+
+    def finished
+
+      Log.divider
+      Log.info("package finished")
+      Log.divider
+
     end
 
   end
