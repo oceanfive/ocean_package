@@ -19,10 +19,16 @@ And then execute:
 Or install it yourself as:
 
     $ gem install ocean_package
+    
+or
+
+    $ sudo gem install ocean_package
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
+```
 
 ## Development
 
