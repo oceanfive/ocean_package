@@ -139,7 +139,7 @@ module OceanPackage
       content += "打包耗时: " + "#{compute_total_time}" + "\n\n"
       content += "发布环境: " + "#{package.configuration}" + "\n\n"
       content += "更新描述: " + final_change_log + "\n\n"
-      content += "发布时间: " + Time.new.strftime("%Y-%m-%d_%H-%M-%S") + "\n\n"
+      content += "发布时间: " + Time.new.strftime("%Y年%m月%d日 %H时%M分%S秒") + "\n\n"
       content += "下载链接: [点我](#{@ipa_download_link})" + "\n\n"
       content += "![二维码](#{@qr_code_url})"
 
