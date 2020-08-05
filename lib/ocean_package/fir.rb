@@ -28,7 +28,9 @@ module OceanPackage
       cmd = 'fir login'
       cmd += ' -T ' + @token
 
+      Log.divider
       Log.info("fir login command: #{cmd}")
+      Log.divider
 
       cmd
     end
@@ -41,7 +43,9 @@ module OceanPackage
       cmd += ' -Q'
       cmd += ' | tee ' + @log_path
 
+      Log.divider
       Log.info("fir publish command: #{cmd}")
+      Log.divider
 
       cmd
     end
@@ -49,6 +53,7 @@ module OceanPackage
     # 运行
     def run
       unless check
+        # 后续会接入蒲公英分发平台，这里不退出程序 exit
         return
       end
       login

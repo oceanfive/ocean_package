@@ -123,7 +123,7 @@ module OceanPackage
       Log.info("clean result: #{res}")
 
       unless res == true
-        Log.error("clean fail, please check!!!")
+        Log.error("clean fail, please check !!!")
         exit(1)
       end
     end
@@ -235,6 +235,8 @@ module OceanPackage
       Log.info("ipa file path: #{path}")
 
       path
+
+      # 也可以在该目录下查找 ipa 后缀的文件
     end
 
   end

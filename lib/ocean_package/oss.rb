@@ -47,7 +47,9 @@ module OceanPackage
       cmd += ' '
       cmd += 'oss://' + @oss_bucket_name + oss_file_path(name)
 
+      Log.divider
       Log.info("oss upload_cmd: #{cmd}")
+      Log.divider
 
       cmd
     end

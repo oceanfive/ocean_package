@@ -107,6 +107,7 @@ module OceanPackage
     end
 
     # 上传 二维码 QRCode 图片到 oss
+    # 后续其他平台，比如蒲公英也是需要类似的逻辑
     def upload_qr_code(path, name)
       @qr_code_url = oss.upload(path, name)
     end
@@ -149,6 +150,7 @@ module OceanPackage
       content
     end
 
+    # 发送打包信息到钉钉
     def send_ding_talk_msg
       # 消息卡片，富文本
       title = make_web_hook_message_title
@@ -158,12 +160,11 @@ module OceanPackage
       ding.send_text_message(title, @at_mobiles)
     end
 
+    # 打包完成
     def finished
-
       Log.divider
       Log.info("package finished")
       Log.divider
-
     end
 
   end
