@@ -17,6 +17,12 @@ module OceanPackage
       logger = Logger.new(STDOUT)
       logger.info("=========")
     end
+
+    # 换行
+    def Log.new_line
+      logger = Logger.new(STDOUT)
+      logger.info("\n")
+    end
   end
 end
 

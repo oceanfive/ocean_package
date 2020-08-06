@@ -145,7 +145,9 @@ module OceanPackage
       content += "下载链接: [点我](#{@ipa_download_link})" + "\n\n"
       content += "![二维码](#{@qr_code_url})"
 
+      Log.divider
       Log.info("web hook message: \n#{content}")
+      Log.divider
 
       content
     end
