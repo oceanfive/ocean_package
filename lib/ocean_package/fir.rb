@@ -37,11 +37,11 @@ module OceanPackage
 
     # 命令：上传ipa文件到fir平台
     def publish_cmd
-      cmd = 'fir publish'
-      cmd += ' ' + @ipa_file_path
-      cmd += ' -c ' + @change_log
-      cmd += ' -Q'
-      cmd += ' | tee ' + @log_path
+      cmd = "fir publish"
+      cmd += " "  + "#{@ipa_file_path}"
+      cmd += " -c " + "#{@change_log}"
+      cmd += " -Q"
+      cmd += " | tee " + "#{@log_path}"
 
       Log.divider
       Log.info("fir publish command: #{cmd}")
