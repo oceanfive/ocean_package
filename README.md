@@ -30,6 +30,11 @@ or
 - `ossutil`, [链接](https://help.aliyun.com/document_detail/120075.html?spm=a2c4g.11186623.2.45.6e491c7akyZ5HE)
 
 
+```
+sudo gem install dingbot
+sudo gem install semantic_logger
+```
+
 
 ## Usage
 
