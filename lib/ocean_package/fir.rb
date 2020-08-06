@@ -170,7 +170,7 @@ module OceanPackage
           f.each_line do |line|
             line_s = "#{line}"
             if line_s =~ pattern
-              release_id = line_s.split(' ').last
+              path = line_s.split(' ').last
               break
             end
           end
