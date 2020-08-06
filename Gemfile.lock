@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ocean_package (0.5.0)
+    ocean_package (0.6.0)
 
 GEM
   remote: https://rubygems.org/

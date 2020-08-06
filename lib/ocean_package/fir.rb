@@ -37,11 +37,12 @@ module OceanPackage
 
     # 命令：上传ipa文件到fir平台
     def publish_cmd
+      # @ipa_file_path @change_log @log_path 需要是字符串值！！！！！
       cmd = "fir publish"
-      cmd += " "  + "#{@ipa_file_path}"
-      cmd += " -c " + "#{@change_log}"
+      cmd += " "  + "'#{@ipa_file_path}'"
+      cmd += " -c " + "'#{@change_log}'"
       cmd += " -Q"
-      cmd += " | tee " + "#{@log_path}"
+      cmd += " | tee " + "'#{@log_path}'"
 
       Log.divider
       Log.info("fir publish command: #{cmd}")
@@ -109,14 +110,18 @@ module OceanPackage
       # 正则表达式匹配
       pattern = /.*Release id is.*/
       release_id = ''
-      File.open(@log_path, "r") do |f|
-        f.each_line do |line|
-          line_s = "#{line}"
-          if line_s =~ pattern
-            release_id = line_s.split(' ').last
-            break
+      if File.exist?("#{@log_path}")
+        File.open(@log_path, "r") do |f|
+          f.each_line do |line|
+            line_s = "#{line}"
+            if line_s =~ pattern
+              release_id = line_s.split(' ').last
+              break
+            end
           end
         end
+      else
+        Log.info("fir log path not exist !!!")
       end
       Log.info("fir release id value: #{release_id}")
       release_id
@@ -127,14 +132,18 @@ module OceanPackage
       # 正则表达式匹配
       pattern = /.*Published succeed:.*/
       link = ''
-      File.open(@log_path, "r") do |f|
-        f.each_line do |line|
-          line_s = "#{line}"
-          if line_s =~ pattern
-            link = line_s.split(' ').last
-            break
+      if File.exist?("#{@log_path}")
+        File.open(@log_path, "r") do |f|
+          f.each_line do |line|
+            line_s = "#{line}"
+            if line_s =~ pattern
+              link = line_s.split(' ').last
+              break
+            end
           end
         end
+      else
+        Log.info("fir log path not exist !!!")
       end
       Log.info("fir link value: #{link}")
       link
@@ -156,14 +165,18 @@ module OceanPackage
       # 正则表达式匹配
       pattern = /.*Local qrcode file:.*/
       path = ''
-      File.open(@log_path, "r") do |f|
-        f.each_line do |line|
-          line_s = "#{line}"
-          if line_s =~ pattern
-            path = line_s.split(' ').last
-            break
+      if File.exist?("#{@log_path}")
+        File.open(@log_path, "r") do |f|
+          f.each_line do |line|
+            line_s = "#{line}"
+            if line_s =~ pattern
+              release_id = line_s.split(' ').last
+              break
+            end
           end
         end
+      else
+        Log.info("fir log path not exist !!!")
       end
       Log.info("fir qr code path value: #{path}")
       path

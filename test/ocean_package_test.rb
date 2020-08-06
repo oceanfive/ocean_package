@@ -9,6 +9,11 @@ class OceanPackageTest < Minitest::Test
 
     puts "#{OceanPackage::Constants::DEFAULT_ARCHIVE_PATH}"
 
+    fir = OceanPackage::Fir.new("f96ee678ac7d583bf55fcc6f5b1fab03", "# Pod Update", "/Users/ocean/Documents/Ipas/zto/ztoExpressClient/2020-08-06_10-54-38/ztoExpressClient.ipa", "/Users/ocean/Documents/Ipas/zto/ztoExpressClient/2020-08-06_10-54-38/fir.log")
+    fir.run
+
+    puts fir.whole_download_link
+
     # path = '/Users/ocean/Documents/myipas/ztoExpressClient.ipa'
     # ipa = OceanPackage::Ipa.new(path)
     # ipa.make_tmp_dir
