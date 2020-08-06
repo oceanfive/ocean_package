@@ -2,6 +2,9 @@ PATH
   remote: .
   specs:
     ocean_package (0.7.0)
+      CFPropertyList
+      dingbot
+      semantic_logger
 
 GEM
   remote: https://rubygems.org/
