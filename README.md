@@ -24,6 +24,13 @@ or
 
     $ sudo gem install ocean_package
 
+其他需要安装的依赖
+
+- `fir-cli`, [链接](https://github.com/FIRHQ/fir-cli)
+- `ossutil`, [链接](https://help.aliyun.com/document_detail/120075.html?spm=a2c4g.11186623.2.45.6e491c7akyZ5HE)
+
+
+
 ## Usage
 
 ```
@@ -32,16 +39,16 @@ oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --
 
 - `--workspace-path`: `.xcworkspace` 文件路径
 - `--scheme`: `scheme` 
-- `--configuration`: Debug 和 Release
+- `--configuration`: `Debug` 和 `Release`
 - `--archive-path`: 生成的 `.xcarchive` 文件目录
 - `--export-options-plist`: 打包用到的 `export-options` plist 文件路径
 - `--company-name`: 公司名称，可以不填
 - `--fir-token`: fir 平台的 token
 - `--change-log`: 更新描述
-- `--oss-bucket-name`: oss bucket 名称
-- `--oss-bucket-path`: oss bucket 路径
-- `--oss-endpoint`: oss 的 endpoint
-- `--ding-token`: 钉钉群机器人的token
+- `--oss-bucket-name`: `oss bucket` 名称
+- `--oss-bucket-path`: `oss bucket` 路径
+- `--oss-endpoint`: `oss` 的 `endpoint`
+- `--ding-token`: 钉钉群机器人的`token`
 - `--at-mobiles`: 钉钉群需要 @ 的人手机号，多个用 `,` 拼接
 
 
