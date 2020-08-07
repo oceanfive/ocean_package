@@ -60,6 +60,7 @@ module OceanPackage
       @end_time = Time.now
       # 返回打包成功的 ipa 文件路径
       ipa_file_path
+      open_ipa_file_path
     end
 
     # 一些校验
@@ -237,6 +238,13 @@ module OceanPackage
       path
 
       # 也可以在该目录下查找 ipa 后缀的文件
+    end
+
+    # 打开所在目录
+    def open_ipa_file_path
+      path = final_archive_path
+      open_cmd = "open #{path}"
+      system(open_cmd)
     end
 
   end

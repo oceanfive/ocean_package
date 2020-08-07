@@ -9,6 +9,10 @@ class OceanPackageTest < Minitest::Test
 
     puts "#{OceanPackage::Constants::DEFAULT_ARCHIVE_PATH}"
 
+    path = "/Users/ocean/Documents/Ipas/zto/ztoExpressClient/2020-08-06_13-10-23"
+    open_cmd = "open #{path}"
+    system(open_cmd)
+
   end
 
 end
