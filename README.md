@@ -39,6 +39,9 @@ sudo gem install multipart-post
 
 ## Usage
 
+> 打包 - 上传到 fir 或 蒲公英平台 - 发送消息到钉钉群
+
+
 ```
 oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --pgy-api-key=蒲公英平台的apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
 ```
@@ -58,6 +61,14 @@ oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --
 - `--ding-token`: 钉钉群机器人的`token`
 - `--at-mobiles`: 钉钉群需要 @ 的人手机号，多个用 `,` 拼接
 
+
+> 指定 ipa 文件
+
+- 上传到蒲公英平台命令格式如下：
+
+```
+oceanpackage --configuration=Debug --ipa-file-path=/Users/ocean/Documents/myipas/test.ipa --company-name=company2 --pgy-api-key=蒲公英平台apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
+```
 
 ## Development
 
