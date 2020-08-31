@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ocean_package (0.9.0)
+    ocean_package (0.10.0)
       CFPropertyList
       dingbot
       faraday
