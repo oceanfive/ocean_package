@@ -70,6 +70,14 @@ oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --
 oceanpackage --configuration=Debug --ipa-file-path=/Users/ocean/Documents/myipas/test.ipa --company-name=company2 --pgy-api-key=蒲公英平台apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
 ```
 
+> 只用到上传ipa
+
+```
+oceanpackage --ipa-file-path=${ipa_file_path} \
+--pgy-api-key=${pgy_api_key} \
+--change-log="${update_desc}" \
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
