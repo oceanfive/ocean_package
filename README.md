@@ -33,6 +33,7 @@ or
 ```
 sudo gem install dingbot
 sudo gem install semantic_logger
+sudo gem install multipart-post
 ```
 
 
