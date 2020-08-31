@@ -39,7 +39,7 @@ sudo gem install semantic_logger
 ## Usage
 
 ```
-oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
+oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --pgy-api-key=蒲公英平台的apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
 ```
 
 - `--workspace-path`: `.xcworkspace` 文件路径
@@ -49,6 +49,7 @@ oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --
 - `--export-options-plist`: 打包用到的 `export-options` plist 文件路径
 - `--company-name`: 公司名称，可以不填
 - `--fir-token`: fir 平台的 token
+- `--pgy-api-key`: 蒲公英平台的 api key
 - `--change-log`: 更新描述
 - `--oss-bucket-name`: `oss bucket` 名称
 - `--oss-bucket-path`: `oss bucket` 路径
