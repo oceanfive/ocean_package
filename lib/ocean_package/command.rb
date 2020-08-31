@@ -6,6 +6,8 @@ module OceanPackage
     attr_accessor :package
     # fir 平台
     attr_accessor :fir
+    # 蒲公英平台
+    attr_accessor :pgy
     # oss 对象
     attr_accessor :oss
     # ding ding
@@ -56,6 +58,11 @@ module OceanPackage
       fir_log_path = @package.final_archive_path + 'fir.log'
       @fir = OceanPackage::Fir.new(fir_token, final_change_log, @package.ipa_file_path, fir_log_path)
 
+      ##### 蒲公英 #####
+      pgy_api_key = argv.option("pgy-api-key", "")
+      @pgy = OceanPackage::Pgy.new(pgy_api_key, final_change_log, @package.ipa_file_path)
+      Log.info("pgy_api_key: #{pgy_api_key}")
+
       ##### oss #####
       oss_bucket_name = argv.option("oss-bucket-name", "")
       Log.info("oss_bucket_name: #{oss_bucket_name}")
@@ -96,8 +103,21 @@ module OceanPackage
 
     # 上传 ipa 文件
     def upload
-      upload_to_fir
+      can_fir = fir.check
+      can_pgy = pgy.check
+      if can_fir
+        Log.info("publish platform: fir")
+        upload_to_fir
+      elsif can_pgy
+        Log.info("publish platform: pgy")
+        upload_to_pgy
+      else
+        Log.info("publish platform: none, exit")
+        exit(1)
+      end
     end
+
+    # ------ fir 平台 -------
 
     # 上传到 fir 平台
     def upload_to_fir
@@ -110,6 +130,13 @@ module OceanPackage
     # 后续其他平台，比如蒲公英也是需要类似的逻辑
     def upload_qr_code(path, name)
       @qr_code_url = oss.upload(path, name)
+    end
+
+    # ------ pgy 平台 -------
+    def upload_to_pgy
+      pgy.run
+      @qr_code_url = pgy.get_qr_code_url
+      @ipa_download_link = pgy.get_download_url
     end
 
     # 总共时间，单位 秒 s
