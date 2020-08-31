@@ -22,6 +22,9 @@ module OceanPackage
     # @ 的手机号
     attr_accessor :at_mobiles
 
+    # 自定义的ipa文件路径
+    attr_accessor :custom_ipa_file_path
+
     def initialize(params = [])
       argv = CLAide::ARGV.new(params)
 
@@ -46,7 +49,15 @@ module OceanPackage
       export_options_plist = argv.option("export-options-plist", "")
       Log.info("export_options_plist: #{export_options_plist}")
 
-      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist)
+      ##### 自定义的 ipa 文件 #####
+      ipa_file_path = argv.option("ipa-file-path", "")
+      Log.info("ipa_file_path: #{ipa_file_path}")
+      @custom_ipa_file_path = ipa_file_path
+
+      # 自定义ipa文件，使用该文件作为 archive path
+      tmp_archive_path = has_custom_ipa_file ? File.dirname("#{ipa_file_path}") : archive_path
+      Log.info("tmp_archive_path: #{tmp_archive_path}")
+      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, tmp_archive_path, company_name, export_options_plist)
 
       fir_token = argv.option("fir-token", "")
       Log.info("fir_token: #{fir_token}")
@@ -56,11 +67,11 @@ module OceanPackage
       Log.info("change_log: #{change_log}")
 
       fir_log_path = @package.final_archive_path + 'fir.log'
-      @fir = OceanPackage::Fir.new(fir_token, final_change_log, @package.ipa_file_path, fir_log_path)
+      @fir = OceanPackage::Fir.new(fir_token, final_change_log, final_ipa_file_path, fir_log_path)
 
       ##### 蒲公英 #####
       pgy_api_key = argv.option("pgy-api-key", "")
-      @pgy = OceanPackage::Pgy.new(pgy_api_key, final_change_log, @package.ipa_file_path)
+      @pgy = OceanPackage::Pgy.new(pgy_api_key, final_change_log, final_ipa_file_path)
       Log.info("pgy_api_key: #{pgy_api_key}")
 
       ##### oss #####
@@ -94,8 +105,22 @@ module OceanPackage
       end
     end
 
+    # 是否设置了自定义的ipa文件
+    def has_custom_ipa_file
+      "#{@custom_ipa_file_path}".empty? ? false : true
+    end
+
+    # 最终的ipa文件路径
+    def final_ipa_file_path
+      has_custom_ipa_file ? "#{@custom_ipa_file_path}" : @package.ipa_file_path
+    end
+
+    # 运行
     def run
-      package.run
+      # 没有自定义ipa文件，需要执行打包命令
+      unless has_custom_ipa_file
+        package.run
+      end
       upload
       send_ding_talk_msg
       finished
@@ -157,7 +182,7 @@ module OceanPackage
 
     # web hook 消息内容
     def make_web_hook_message
-      ipa = OceanPackage::Ipa.new(package.ipa_file_path)
+      ipa = OceanPackage::Ipa.new(final_ipa_file_path)
       ipa.run
 
       # markdown 格式

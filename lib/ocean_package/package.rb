@@ -33,6 +33,9 @@ module OceanPackage
       @company_name = company_name
       @date_time = Time.new.strftime("%Y-%m-%d_%H-%M-%S")
       @export_options_plist = export_options_plist
+
+      # 预设置开始时间
+      @start_time = Time.now
     end
 
     # workspace 的路径
@@ -145,11 +148,18 @@ module OceanPackage
     # 最终的打包路径
     def final_archive_path
       path = processed_archive_path
-      path += @company_name + '/'
-      path += project_name + '/'
+      unless "#{@company_name}".empty?
+        path += @company_name + '/'
+      end
+      unless "#{project_name}".empty?
+        path += project_name + '/'
+      end
       path += @date_time + '/'
 
       Log.info("final archive path: #{path}")
+
+      # 不存在，需要进行创建，外部传入了 ipa 文件的情况
+      FileUtils.mkdir_p(path)
 
       path
     end
