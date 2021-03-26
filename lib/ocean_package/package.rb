@@ -27,6 +27,9 @@ module OceanPackage
     # 结束时间
     attr_accessor :end_time
 
+    # ipa 最大保存的数目
+    attr_accessor :ipa_max_retain_number
+
     def initialize(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist, extra_export_params)
       @workspace_path = workspace_path
       @scheme = scheme
@@ -37,6 +40,7 @@ module OceanPackage
       @export_options_plist = export_options_plist
       @extra_export_params = extra_export_params
 
+      @ipa_max_retain_number = 3
       # 预设置开始时间
       @start_time = Time.now
     end
@@ -61,6 +65,8 @@ module OceanPackage
       @start_time = Time.now
       # 检查必须参数
       check
+      # 清理历史的ipa
+      clean_history_ipa
       # clean 项目
       clean
       # 打包项目
@@ -110,6 +116,51 @@ module OceanPackage
     end
 
     # **************************************
+    # clean history
+    # **************************************
+
+    def clean_history_ipa
+      path = final_archive_path_company_pro
+
+      sub_paths = Array.new
+      Dir.each_child(path) do |x|
+        unless "#{x}".eql?(".DS_Store")
+          sub_paths.push("#{x}")
+        end
+      end
+
+      if sub_paths.length > @ipa_max_retain_number
+        Log.divider
+        Log.info("clean history ipas: begin =======")
+
+        count = sub_paths.length - @ipa_max_retain_number
+        deleted_paths = sub_paths.first(count)
+
+        deleted_paths.each do |p|
+          new_path = path + p
+          Log.info(new_path)
+          delete_directory(new_path)
+        end
+
+        Log.info("clean history ipas: end =======")
+        Log.divider
+      end
+    end
+
+    def delete_directory(dirPath)
+      if File.directory?(dirPath)
+        Dir.foreach(dirPath) do |subFile|
+          if subFile != '.' and subFile != '..'
+            delete_directory(File.join(dirPath, subFile));
+          end
+        end
+        Dir.rmdir(dirPath)
+      else
+        File.delete(dirPath)
+      end
+    end
+
+    # **************************************
     # clean
     # **************************************
 
@@ -152,8 +203,8 @@ module OceanPackage
       end
     end
 
-    # 最终的打包路径
-    def final_archive_path
+    # 最终的打包路径，包含了公司，项目名称
+    def final_archive_path_company_pro
       path = processed_archive_path
       unless "#{@company_name}".empty?
         path += @company_name + '/'
@@ -161,6 +212,13 @@ module OceanPackage
       unless "#{project_name}".empty?
         path += project_name + '/'
       end
+
+      path
+    end
+
+    # 最终的打包路径
+    def final_archive_path
+      path = final_archive_path_company_pro
       path += @date_time + '/'
 
       Log.info("final archive path: #{path}")

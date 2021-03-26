@@ -8,7 +8,6 @@ module OceanPackage
     DEFAULT_CONFIGURATION = "Debug"
     DEFAULT_COMPANY_NAME = "YourCompanyName"
     DEFAULT_ARCHIVE_PATH = "#{Dir.home}/Documents/Ipas/"
-
   end
 
 end

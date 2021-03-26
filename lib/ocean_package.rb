@@ -5,6 +5,7 @@ require 'semantic_logger'
 require 'multipart_post'
 require 'net/http/post/multipart'
 require 'json'
+require 'find'
 
 # 注意：这里使用 require_relative 来引用文件
 require_relative 'ocean_package/version'
