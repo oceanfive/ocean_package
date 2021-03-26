@@ -23,9 +23,9 @@ module OceanPackage
   require 'claide'
 
   def self.run(argvs)
-    puts "====="
+    puts "=========ARGV========="
     puts ARGV
-    puts "====="
+    puts "=========ARGV========="
 
     command = OceanPackage::Command.new(argvs)
     command.run

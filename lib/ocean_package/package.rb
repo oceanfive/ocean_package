@@ -9,6 +9,8 @@ module OceanPackage
     attr_accessor :scheme
     # 配置信息: Debug, Release
     attr_accessor :configuration
+    # 额外的打底参数，比如对buildsettings进行重写
+    attr_accessor :extra_export_params
 
     # archive 归档路径
     attr_accessor :archive_path
@@ -25,7 +27,7 @@ module OceanPackage
     # 结束时间
     attr_accessor :end_time
 
-    def initialize(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist)
+    def initialize(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist, extra_export_params)
       @workspace_path = workspace_path
       @scheme = scheme
       @configuration = configuration
@@ -33,6 +35,7 @@ module OceanPackage
       @company_name = company_name
       @date_time = Time.new.strftime("%Y-%m-%d_%H-%M-%S")
       @export_options_plist = export_options_plist
+      @extra_export_params = extra_export_params
 
       # 预设置开始时间
       @start_time = Time.now
@@ -56,9 +59,13 @@ module OceanPackage
     # 执行打包相关命令
     def run
       @start_time = Time.now
+      # 检查必须参数
       check
+      # clean 项目
       clean
+      # 打包项目
       archive
+      # 导出 ipa 包
       export
       @end_time = Time.now
       # 返回打包成功的 ipa 文件路径
@@ -214,6 +221,17 @@ module OceanPackage
       cmd += ' -archivePath ' + archive_file_path
       cmd += ' -exportPath ' + final_archive_path
       cmd += ' -exportOptionsPlist ' + @export_options_plist
+
+      unless "#{@extra_export_params}".empty?
+        # 分割
+        params = "#{@extra_export_params}".split(",")
+        # 再拼接
+        joined_string = params.join(" ")
+
+        unless joined_string.empty?
+          cmd += ' ' + joined_string
+        end
+      end
 
       Log.divider
       Log.info("export command: #{cmd}")

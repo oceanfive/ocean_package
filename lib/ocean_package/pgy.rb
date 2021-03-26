@@ -107,6 +107,7 @@ module OceanPackage
           # 响应是字符串类型，需要转为json进行处理
           json_value = JSON.parse(res.body)
           Log.divider
+          Log.info('pgy upload response: ')
           Log.info(json_value)
           # 成功
           data = json_value["data"]

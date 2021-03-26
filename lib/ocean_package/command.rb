@@ -37,7 +37,8 @@ module OceanPackage
       scheme = argv.option("scheme", "")
       Log.info("scheme: #{scheme}")
 
-      configuration = argv.option("configuration", OceanPackage::Constants::DEFAULT_CONFIGURATION)
+      # 默认配置改为空，防止包环境错误
+      configuration = argv.option("configuration", "")
       Log.info("configuration: #{configuration}")
 
       archive_path = argv.option("archive-path", OceanPackage::Constants::DEFAULT_ARCHIVE_PATH)
@@ -54,10 +55,13 @@ module OceanPackage
       Log.info("ipa_file_path: #{ipa_file_path}")
       @custom_ipa_file_path = ipa_file_path
 
+      extra_export_params = argv.option("extra-export-params", "")
+      Log.info("extra-export-params: #{extra_export_params}")
+
       # 自定义ipa文件，使用该文件作为 archive path
       tmp_archive_path = has_custom_ipa_file ? File.dirname("#{ipa_file_path}") : archive_path
       Log.info("tmp_archive_path: #{tmp_archive_path}")
-      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, tmp_archive_path, company_name, export_options_plist)
+      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, tmp_archive_path, company_name, export_options_plist, extra_export_params)
 
       fir_token = argv.option("fir-token", "")
       Log.info("fir_token: #{fir_token}")
