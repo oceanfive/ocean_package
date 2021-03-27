@@ -58,10 +58,13 @@ module OceanPackage
       extra_export_params = argv.option("extra-export-params", "")
       Log.info("extra-export-params: #{extra_export_params}")
 
+      open_finder = argv.flag?("open-finder", false )
+      Log.info("open-finder: #{open_finder}")
+
       # 自定义ipa文件，使用该文件作为 archive path
       tmp_archive_path = has_custom_ipa_file ? File.dirname("#{ipa_file_path}") : archive_path
       Log.info("tmp_archive_path: #{tmp_archive_path}")
-      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, tmp_archive_path, company_name, export_options_plist, extra_export_params)
+      @package = OceanPackage::Package.new(workspace_path, scheme, configuration, tmp_archive_path, company_name, export_options_plist, extra_export_params, open_finder)
 
       fir_token = argv.option("fir-token", "")
       Log.info("fir_token: #{fir_token}")

@@ -29,8 +29,10 @@ module OceanPackage
 
     # ipa 最大保存的数目
     attr_accessor :ipa_max_retain_number
+    # 打包完成是否打开文件夹
+    attr_accessor :open_finder
 
-    def initialize(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist, extra_export_params)
+    def initialize(workspace_path, scheme, configuration, archive_path, company_name, export_options_plist, extra_export_params, open_finder)
       @workspace_path = workspace_path
       @scheme = scheme
       @configuration = configuration
@@ -41,6 +43,7 @@ module OceanPackage
       @extra_export_params = extra_export_params
 
       @ipa_max_retain_number = 3
+      @open_finder = open_finder
       # 预设置开始时间
       @start_time = Time.now
     end
@@ -76,7 +79,9 @@ module OceanPackage
       @end_time = Time.now
       # 返回打包成功的 ipa 文件路径
       ipa_file_path
-      open_ipa_file_path
+      if @open_finder
+        open_ipa_file_path
+      end
     end
 
     # 一些校验
