@@ -39,8 +39,11 @@ sudo gem install multipart-post
 
 ## Usage
 
+> 打包 - 上传到 fir 或 蒲公英平台 - 发送消息到钉钉群
+
+
 ```
-oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --pgy-api-key=蒲公英平台的apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
+oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --scheme=MyApp --configuration=Debug --archive-path=/Users/ocean/Documents/myipas --export-options-plist=/Users/ocean/Desktop/code/iOS/Company/MyApp/AdHocExportOptions.plist --company-name=MyCompany --fir-token=fir平台的token --pgy-api-key=蒲公英平台的apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号 --extra-export-params="-allowProvisioningUpdates,IPHONEOS_DEPLOYMENT_TARGET=11.0"
 ```
 
 - `--workspace-path`: `.xcworkspace` 文件路径
@@ -57,7 +60,25 @@ oceanpackage --workspace-path=/Users/ocean/Desktop/code/iOS/MyApp.xcworkspace --
 - `--oss-endpoint`: `oss` 的 `endpoint`
 - `--ding-token`: 钉钉群机器人的`token`
 - `--at-mobiles`: 钉钉群需要 @ 的人手机号，多个用 `,` 拼接
+- `--extra-export-params`: 打包的额外参数，多个用 `,` 拼接，例如 `"-allowProvisioningUpdates,IPHONEOS_DEPLOYMENT_TARGET=11.0"`
+- `--open-finder`: 打包完成是否打开对应的文件目录，`--no-open-finder`表示`false`， `--open-finder` 表示 `true`
 
+
+> 指定 ipa 文件
+
+- 上传到蒲公英平台命令格式如下：
+
+```
+oceanpackage --configuration=Debug --ipa-file-path=/Users/ocean/Documents/myipas/test.ipa --company-name=company2 --pgy-api-key=蒲公英平台apikey --change-log=测试一下 --oss-bucket-name=bucket名称 --oss-bucket-path=bucket路径 --oss-endpoint=oss的endpoint --ding-token=钉钉群机器人token --at-mobiles=需要@的人手机号
+```
+
+> 只用到上传ipa
+
+```
+oceanpackage --ipa-file-path=${ipa_file_path} \
+--pgy-api-key=${pgy_api_key} \
+--change-log="${update_desc}" \
+```
 
 ## Development
 
