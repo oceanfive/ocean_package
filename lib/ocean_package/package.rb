@@ -253,6 +253,7 @@ module OceanPackage
       cmd += ' -configuration ' + @configuration
       cmd += ' -archivePath ' + archive_file_path
       cmd += ' archive'
+      cmd += ' -allowProvisioningUpdates'
 
       Log.divider
       Log.info("archive command: #{cmd}")
