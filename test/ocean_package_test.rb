@@ -45,6 +45,38 @@ class OceanPackageTest < Minitest::Test
     # puts "\n hhhh"
     # puts 'bbbb'
 
+    t = Time.now.to_i
+    params = {
+      "startTime" => t,
+      "pullGitTime" => t,
+      "pullDependencyTime" => t,
+      "cleanTime" => t,
+      "archiveTime" => t,
+      "reinforceTime" => t,
+      "exportTime" => t,
+      "uploadIpaTime" => t,
+      "uploadDsymTime" => t,
+      "notifyGroupTime" => t,
+      "endTime" => t
+    }
+
+    time_flow_dir = "/Users/ocean/"
+    time_flow_file_path = "#{time_flow_dir}timeflow.json"
+    params['timeFlowPath'] = time_flow_file_path
+    json = JSON.dump(params)
+    puts "json ==="
+    puts json
+
+    unless File.exist?(time_flow_file_path)
+      FileUtils.touch(time_flow_file_path)
+    end
+    a_file = File.new(time_flow_file_path, "r+")
+    if a_file
+      a_file.syswrite(json)
+      puts "write time flow to path(success): #{time_flow_file_path}"
+    else
+      puts "write time flow to path(fail): #{time_flow_file_path}"
+    end
 
   end
 end
