@@ -2,6 +2,7 @@
 module OceanPackage
   class Command
     include OceanPackage::TimeFlow::Mixin
+    require 'net/http'
 
     # xcodebuild 打包相关
     attr_accessor :package
@@ -26,6 +27,11 @@ module OceanPackage
     # 自定义的ipa文件路径
     attr_accessor :custom_ipa_file_path
 
+    # 整个流程时间记录上报url
+    attr_accessor :time_flow_url
+
+    # 整个流程时间记录上报url，额外的参数
+    attr_accessor :time_flow_extra_req
 
     def initialize(params = [])
       argv = CLAide::ARGV.new(params)
@@ -62,6 +68,14 @@ module OceanPackage
 
       open_finder = argv.flag?("open-finder", false )
       Log.info("open-finder: #{open_finder}")
+
+      time_flow_url = argv.option("time-flow-url", "")
+      Log.info("time_flow_url: #{time_flow_url}")
+      @time_flow_url = time_flow_url
+
+      time_flow_extra_req = argv.option("time-flow-extra-req", "")
+      Log.info("time_flow_extra_req: #{time_flow_extra_req}")
+      @time_flow_extra_req = time_flow_extra_req
 
       # 自定义ipa文件，使用该文件作为 archive path
       tmp_archive_path = has_custom_ipa_file ? File.dirname("#{ipa_file_path}") : archive_path
@@ -253,7 +267,6 @@ module OceanPackage
       time_flow_dir = @package.final_archive_path
       time_flow_file_path = "#{time_flow_dir}timeflow.json"
       params = time_flow.make_all_points
-      params['timeFlowPath'] = time_flow_file_path
       json = JSON.dump(params)
 
       unless File.exist?(time_flow_file_path)
@@ -265,6 +278,35 @@ module OceanPackage
         Log.info("write time flow to path(success): #{time_flow_file_path}")
       else
         Log.error("write time flow to path(fail): #{time_flow_file_path}")
+      end
+
+      upload_time_flow_data(params)
+    end
+
+    def upload_time_flow_data(data)
+      time_flow_url_value = "#{@time_flow_url}"
+      unless time_flow_url_value.empty?
+        Log.info("upload time flow data")
+
+        uri = URI.parse(time_flow_url_value)
+        params = data
+
+        # 分割
+        extra_params = "#{@time_flow_extra_req}".split(",")
+        # 再拼接
+        extra_params.each do |p|
+          extra_key_values = "#{p}".split("=")
+          if extra_key_values.length == 2
+            extra_key = "#{extra_key_values[0]}"
+            extra_value = "#{extra_key_values[1]}"
+            if extra_key.length > 0 && extra_value.length > 0
+              params[extra_key] = extra_value
+            end
+          end
+        end
+
+        res = Net::HTTP.post_form(uri, params)
+        Log.info("upload time flow data result: #{res.body}")
       end
     end
 

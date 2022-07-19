@@ -59,24 +59,34 @@ class OceanPackageTest < Minitest::Test
       "notifyGroupTime" => t,
       "endTime" => t
     }
+    params["project"] = "1"
+    params["platform"] = 1
+    #
+    # # 构造请求
+    # #
+    # uri = URI('http://127.0.0.1:8000/addPackageTime/')
+    # res = Net::HTTP.post_form(uri, params)
+    # puts "res ======"
+    # puts res
+    # puts "res.body ===="
+    # puts res.body
 
-    time_flow_dir = "/Users/ocean/"
-    time_flow_file_path = "#{time_flow_dir}timeflow.json"
-    params['timeFlowPath'] = time_flow_file_path
-    json = JSON.dump(params)
-    puts "json ==="
-    puts json
+    # 分割
+    extra_params = "name=xiao,age=20".split(",")
+    # 再拼接
+    extra_params.each do |p|
+      extra_key_values = "#{p}".split("=")
+      if extra_key_values.length == 2
+        extra_key = "#{extra_key_values[0]}"
+        extra_value = "#{extra_key_values[1]}"
+        if extra_key.length > 0 && extra_value.length > 0
+          params[extra_key] = extra_value
+        end
+      end
+    end
 
-    unless File.exist?(time_flow_file_path)
-      FileUtils.touch(time_flow_file_path)
-    end
-    a_file = File.new(time_flow_file_path, "r+")
-    if a_file
-      a_file.syswrite(json)
-      puts "write time flow to path(success): #{time_flow_file_path}"
-    else
-      puts "write time flow to path(fail): #{time_flow_file_path}"
-    end
+    puts "params: "
+    puts params
 
   end
 end
