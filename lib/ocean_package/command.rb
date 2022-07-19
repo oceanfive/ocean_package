@@ -187,6 +187,17 @@ module OceanPackage
       seconds
     end
 
+    # 总共时间，单位 分
+    def compute_total_time_minute
+      time1 = package.start_time
+      time2 = Time.now
+      minutes = (time2 - time1) / 60
+
+      Log.info("total time: #{minutes} minute")
+
+      minutes
+    end
+
     # web hook 消息标题
     def make_web_hook_message_title
       "iOS 来新包啦~"
@@ -202,7 +213,7 @@ module OceanPackage
       content += "当前平台: iOS \n\n"
       content += "APP名称: " + ipa.display_name + "\n\n"
       content += "当前版本: " + ipa.version + "(#{ipa.build_version})" + "\n\n"
-      content += "打包耗时: " + "#{compute_total_time}" + "s" + "\n\n"
+      content += "打包耗时: " + "#{compute_total_time_minute}" + " 分钟" + "\n\n"
       content += "发布环境: " + "#{package.configuration}" + "\n\n"
       content += "更新描述: " + final_change_log + "\n\n"
       content += "发布时间: " + Time.new.strftime("%Y年%m月%d日 %H时%M分%S秒") + "\n\n"

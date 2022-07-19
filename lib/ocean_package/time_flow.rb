@@ -109,7 +109,7 @@ module OceanPackage
         "notifyGroupTime" => @notify_group_time,
         "endTime" => @end_time
       }
-      json
+      params
     end
 
     module Mixin
