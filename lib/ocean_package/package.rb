@@ -2,6 +2,7 @@
 module OceanPackage
 
   class Package
+    include OceanPackage::TimeFlow::Mixin
 
     # .xcworkspace 文件路径
     attr_accessor :workspace_path
@@ -186,6 +187,8 @@ module OceanPackage
 
     # clean
     def clean
+      time_flow.point_clean_time
+
       res = system(clean_cmd)
       Log.info("clean result: #{res}")
 
@@ -264,6 +267,8 @@ module OceanPackage
 
     # archive
     def archive
+      time_flow.point_archive_time
+
       res = system(archive_cmd)
 
       Log.info("archive result: #{res}")
@@ -305,6 +310,8 @@ module OceanPackage
     end
 
     def export
+      time_flow.point_export_time
+
       res = system(export_cmd)
 
       Log.info("export result: #{res}")

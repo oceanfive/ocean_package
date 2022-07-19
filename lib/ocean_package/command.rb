@@ -1,6 +1,7 @@
 
 module OceanPackage
   class Command
+    include OceanPackage::TimeFlow::Mixin
 
     # xcodebuild 打包相关
     attr_accessor :package
@@ -24,6 +25,7 @@ module OceanPackage
 
     # 自定义的ipa文件路径
     attr_accessor :custom_ipa_file_path
+
 
     def initialize(params = [])
       argv = CLAide::ARGV.new(params)
@@ -124,6 +126,7 @@ module OceanPackage
 
     # 运行
     def run
+      time_flow.point_start_time
       # 没有自定义ipa文件，需要执行打包命令
       unless has_custom_ipa_file
         package.run
@@ -135,6 +138,8 @@ module OceanPackage
 
     # 上传 ipa 文件
     def upload
+      time_flow.point_upload_ipa_time
+
       can_fir = fir.check
       can_pgy = pgy.check
       if can_fir
@@ -213,6 +218,8 @@ module OceanPackage
 
     # 发送打包信息到钉钉
     def send_ding_talk_msg
+      time_flow.point_notify_group_time
+
       # 消息卡片，富文本
       title = make_web_hook_message_title
       content = make_web_hook_message
@@ -223,9 +230,31 @@ module OceanPackage
 
     # 打包完成
     def finished
+      time_flow.point_end_time
+      write_time_flow_data
+
       Log.divider
       Log.info("package finished")
       Log.divider
+    end
+
+    def write_time_flow_data
+      time_flow_dir = @package.final_archive_path
+      time_flow_file_path = "#{time_flow_dir}timeflow.json"
+      params = time_flow.make_all_points
+      params['timeFlowPath'] = time_flow_file_path
+      json = JSON.dump(params)
+
+      unless File.exist?(time_flow_file_path)
+        FileUtils.touch(time_flow_file_path)
+      end
+      a_file = File.new(time_flow_file_path, "r+")
+      if a_file
+        a_file.syswrite(json)
+        Log.info("write time flow to path(success): #{time_flow_file_path}")
+      else
+        Log.error("write time flow to path(fail): #{time_flow_file_path}")
+      end
     end
 
   end

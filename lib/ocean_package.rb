@@ -10,6 +10,8 @@ require 'find'
 # 注意：这里使用 require_relative 来引用文件
 require_relative 'ocean_package/version'
 require_relative 'ocean_package/config'
+# 放在前面
+require_relative 'ocean_package/time_flow'
 require_relative 'ocean_package/command'
 require_relative 'ocean_package/constants'
 require_relative 'ocean_package/fir'
