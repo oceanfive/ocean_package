@@ -3,6 +3,7 @@ module OceanPackage
   class Command
     include OceanPackage::TimeFlow::Mixin
     require 'net/http'
+    require 'uri'
 
     # xcodebuild 打包相关
     attr_accessor :package
@@ -288,7 +289,7 @@ module OceanPackage
       unless time_flow_url_value.empty?
         Log.info("upload time flow data")
 
-        uri = URI.parse(time_flow_url_value)
+        uri = URI(time_flow_url_value)
         params = data
 
         # 分割
@@ -304,6 +305,9 @@ module OceanPackage
             end
           end
         end
+
+        Log.info("url: #{uri}")
+        Log.info("body: #{params}")
 
         res = Net::HTTP.post_form(uri, params)
         Log.info("upload time flow data result: #{res.body}")
